@@ -30,6 +30,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.ClientError;
 import com.android.volley.DefaultRetryPolicy;
@@ -51,9 +52,11 @@ import com.qdocs.smartshospital.utils.Utility;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,18 +72,19 @@ import static android.widget.Toast.makeText;
 public class Login extends Activity {
     Locale myLocale;
     ImageView logoIV;
-    TextView tv_forgotPass, privacyTV,addappoint;
+    TextView tv_forgotPass, privacyTV, addappoint;
     Button btn_login;
     EditText et_userName, et_password;
     LinearLayout changeUrlBtn;
     ImageView btn_showPassword, usernameIcon, passwordIcon;
     boolean isPasswordVisible = false;
     public Map<String, String> params = new Hashtable<String, String>();
-    public Map<String, String>  headers = new HashMap<String, String>();
-    String dates="";
-    String id="";
+    public Map<String, String> headers = new HashMap<String, String>();
+    String dates = "";
+    String id = "";
     String device_token;
     String langCode = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,11 +92,11 @@ public class Login extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
 
-        tv_forgotPass = (TextView)findViewById(R.id.tv_passwordReset_login);
-        addappoint = (TextView)findViewById(R.id.addappoint);
-        btn_login = (Button)findViewById(R.id.btn_login);
-        et_userName = (EditText)findViewById(R.id.et_username_login);
-        et_password = (EditText)findViewById(R.id.et_password_login);
+        tv_forgotPass = (TextView) findViewById(R.id.tv_passwordReset_login);
+        addappoint = (TextView) findViewById(R.id.addappoint);
+        btn_login = (Button) findViewById(R.id.btn_login);
+        et_userName = (EditText) findViewById(R.id.et_username_login);
+        et_password = (EditText) findViewById(R.id.et_password_login);
         btn_showPassword = (ImageView) findViewById(R.id.login_password_visibleBtn);
         usernameIcon = (ImageView) findViewById(R.id.icon_username_login);
         passwordIcon = (ImageView) findViewById(R.id.icon_password_login);
@@ -104,13 +108,13 @@ public class Login extends Activity {
             public void onClick(View v) {
 
                 String domain = Utility.getSharedPreferences(getApplicationContext(), Constants.appDomain);
-                System.out.println(" BEFORE PRIVACY URL"+domain);
-                if(!domain.endsWith("/")) {
+                System.out.println(" BEFORE PRIVACY URL" + domain);
+                if (!domain.endsWith("/")) {
                     domain += "/";
                 }
-                System.out.println("PRIVACY URL"+domain);
+                System.out.println("PRIVACY URL" + domain);
                 domain += Constants.privacyPolicyUrl;
-                System.out.println("PRIVACY URL"+domain);
+                System.out.println("PRIVACY URL" + domain);
 
                 Log.e("PRIVACY URL", domain);
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(domain));
@@ -119,23 +123,23 @@ public class Login extends Activity {
             }
         });
 
-        String appLogo = Utility.getSharedPreferences(this, Constants.appLogo)+"?"+new Random().nextInt(11);
+        String appLogo = Utility.getSharedPreferences(this, Constants.appLogo) + "?" + new Random().nextInt(11);
         Picasso.with(getApplicationContext()).load(appLogo).into(logoIV);
 
 
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( Login.this,  new OnSuccessListener<InstanceIdResult>() {
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(Login.this, new OnSuccessListener<InstanceIdResult>() {
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult) {
-                device_token = FirebaseInstanceId.getInstance().getToken()+"";
-                Log.e("DEVICE TOKEN",device_token);
-                System.out.println("DEVICE TOKEN="+device_token);
+                device_token = FirebaseInstanceId.getInstance().getToken() + "";
+                Log.e("DEVICE TOKEN", device_token);
+                System.out.println("DEVICE TOKEN=" + device_token);
             }
         });
-        if(!Constants.askUrlFromUser) {
+        if (!Constants.askUrlFromUser) {
             changeUrlBtn.setVisibility(View.GONE);
-           getSettingsFromApi(Constants.domain);
+            getSettingsFromApi(Constants.domain);
         }
-        if(Constants.isDemoModeOn) {
+        if (Constants.isDemoModeOn) {
             et_userName.setText("pat1");
             et_password.setText("password");
         }
@@ -143,7 +147,7 @@ public class Login extends Activity {
         btn_showPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!isPasswordVisible) {
+                if (!isPasswordVisible) {
                     et_password.setTransformationMethod(null);
                     btn_showPassword.setImageResource(R.drawable.eye_black);
                     isPasswordVisible = true;
@@ -167,30 +171,30 @@ public class Login extends Activity {
             @Override
             public void onClick(View v) {
 
-                    String username = et_userName.getText().toString();
-                    String password = et_password.getText().toString();
-                    if(username.isEmpty()) {
-                        et_userName.setError("Please enter your registered username");
-                        et_userName.requestFocus();
-                        return;
-                    } else if (password.isEmpty()) {
-                        et_password.setError("Please Enter Password");
-                        et_password.requestFocus();
-                        return;
+                String username = et_userName.getText().toString();
+                String password = et_password.getText().toString();
+                if (username.isEmpty()) {
+                    et_userName.setError("Please enter your registered username");
+                    et_userName.requestFocus();
+                    return;
+                } else if (password.isEmpty()) {
+                    et_password.setError("Please Enter Password");
+                    et_password.requestFocus();
+                    return;
+                } else {
+                    if (Utility.isConnectingToInternet(Login.this)) {
+                        params.put("username", username);
+                        params.put("password", password);
+                        params.put("deviceToken", device_token);
+                        JSONObject obj = new JSONObject(params);
+                        Log.e("params ", obj.toString());
+                        getDataFromApi(obj.toString());
+
+                        getSettingsFromApi(Utility.getSharedPreferences(getApplicationContext(), Constants.appDomain));
+
                     } else {
-                        if(Utility.isConnectingToInternet(Login.this)){
-                            params.put("username", username);
-                            params.put("password", password);
-                            params.put("deviceToken", device_token);
-                            JSONObject obj=new JSONObject(params);
-                            Log.e("params ", obj.toString());
-                            getDataFromApi(obj.toString());
-
-                            getSettingsFromApi(Utility.getSharedPreferences(getApplicationContext(), Constants.appDomain));
-
-                        }else{
-                            makeText(getApplicationContext(), R.string.noInternetMsg, Toast.LENGTH_SHORT).show();
-                        }
+                        makeText(getApplicationContext(), R.string.noInternetMsg, Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -198,7 +202,7 @@ public class Login extends Activity {
         addappoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(Login.this,PatientFrontAddAppoinment.class);
+                Intent intent = new Intent(Login.this, PatientFrontAddAppoinment.class);
                 startActivity(intent);
 
             }
@@ -223,18 +227,18 @@ public class Login extends Activity {
         //DECORATE//
     }
 
-    private void getSettingsFromApi (String domain) {
+    private void getSettingsFromApi(String domain) {
         final ProgressDialog pd = new ProgressDialog(this);
         pd.setMessage("Loading");
         pd.setCancelable(false);
         pd.show();
 
-        if(!domain.endsWith("/")) {
+        if (!domain.endsWith("/")) {
             domain += "/";
         }
-        final String url = domain+"app";
+        final String url = domain + "app";
         Log.e("Verification Url", url);
-        System.out.println("url== "+url);
+        System.out.println("url== " + url);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -249,15 +253,14 @@ public class Login extends Activity {
                             Utility.setSharedPreferenceBoolean(getApplicationContext(), "isUrlTaken", true);
                             Utility.setSharedPreference(MyApp.getContext(), Constants.apiUrl, object.getString("url"));
                             Utility.setSharedPreference(MyApp.getContext(), Constants.imagesUrl, object.getString("site_url"));
-                            String appLogo = object.getString("site_url")+"uploads/hospital_content/logo/"+object.getString("app_logo");
+                            String appLogo = object.getString("site_url") + "uploads/hospital_content/logo/" + object.getString("app_logo");
                             Utility.setSharedPreference(MyApp.getContext(), Constants.appLogo, appLogo);
-                            System.out.println("IMAGE LOGO "+appLogo);
-                            Picasso.with(getApplicationContext()).load(appLogo).memoryPolicy(MemoryPolicy.NO_CACHE)
-                                    .networkPolicy(NetworkPolicy.NO_CACHE).into(logoIV);
+                            System.out.println("IMAGE LOGO " + appLogo);
+                            Picasso.with(getApplicationContext()).load(appLogo).memoryPolicy(MemoryPolicy.NO_CACHE).networkPolicy(NetworkPolicy.NO_CACHE).into(logoIV);
                             String secColour = object.getString("app_secondary_color_code");
                             String primaryColour = object.getString("app_primary_color_code");
 
-                            if(secColour.length() == 7 && primaryColour.length() == 7 ) {
+                            if (secColour.length() == 7 && primaryColour.length() == 7) {
                                 Utility.setSharedPreference(getApplicationContext(), Constants.secondaryColour, secColour);
                                 Utility.setSharedPreference(getApplicationContext(), Constants.primaryColour, primaryColour);
                             } else {
@@ -267,7 +270,7 @@ public class Login extends Activity {
                             Log.e("apiUrl Utility", Utility.getSharedPreferences(getApplicationContext(), "apiUrl"));
                             langCode = object.getString("lang_code");
                             Utility.setSharedPreference(getApplicationContext(), Constants.langCode, langCode);
-                            if(!langCode.isEmpty()) {
+                            if (!langCode.isEmpty()) {
                                 setLocale(langCode);
                             }
                         } else {
@@ -286,10 +289,10 @@ public class Login extends Activity {
             public void onErrorResponse(VolleyError error) {
                 pd.dismiss();
                 try {
-                    int  statusCode = error.networkResponse.statusCode;
+                    int statusCode = error.networkResponse.statusCode;
                     NetworkResponse response = error.networkResponse;
-                    Log.e("Volley Error",""+statusCode+" "+response.data.toString());
-                    if( error instanceof ClientError) {
+                    Log.e("Volley Error", "" + statusCode + " " + response.data.toString());
+                    if (error instanceof ClientError) {
                         Toast.makeText(getApplicationContext(), "Invalid Domain.", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getApplicationContext(), "Invalid Domain.", Toast.LENGTH_SHORT).show();
@@ -303,14 +306,14 @@ public class Login extends Activity {
         requestQueue.add(stringRequest);  //Adding request to the queue
     }
 
-    private void getDataFromApi (String bodyParams) {
+    private void getDataFromApi(String bodyParams) {
         final ProgressDialog pd = new ProgressDialog(this);
         pd.setMessage("Loading");
         pd.setCancelable(false);
         pd.show();
 
         final String requestBody = bodyParams;
-        String url = Utility.getSharedPreferences(getApplicationContext(), "apiUrl")+Constants.loginUrl;
+        String url = Utility.getSharedPreferences(getApplicationContext(), "apiUrl") + Constants.loginUrl;
         Log.e("URL", url);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -334,14 +337,14 @@ public class Login extends Activity {
                             dateFormat = dateFormat.replace("d", "dd");
                             Utility.setSharedPreference(getApplicationContext(), "dateFormat", dateFormat);
 
-                            if(data.getString("time_format").equals("12-hour")) {
+                            if (data.getString("time_format").equals("12-hour")) {
                                 String datesFormat = data.getString("date_format");
                                 datesFormat = datesFormat.replace("m", "MM");
                                 datesFormat = datesFormat.replace("d", "dd");
                                 String datetimeFormat = datesFormat + " " + "hh:mm aa";
                                 System.out.println("datetimeFormat===" + datetimeFormat);
                                 Utility.setSharedPreference(getApplicationContext(), "datetimeFormat", datetimeFormat);
-                            }else{
+                            } else {
                                 String datesFormat = data.getString("date_format");
                                 datesFormat = datesFormat.replace("m", "MM");
                                 datesFormat = datesFormat.replace("d", "dd");
@@ -357,7 +360,7 @@ public class Login extends Activity {
                             Utility.setSharedPreferenceBoolean(getApplicationContext(), "isLoggegIn", true);
                             Utility.setSharedPreference(getApplicationContext(), Constants.patient_id, data.getString("patient_id"));
                             Utility.setSharedPreference(getApplicationContext(), Constants.patient_unique_id, data.getString("patient_unique_id"));
-                            System.out.println("patient_unique_id=="+data.getString("patient_unique_id"));
+                            System.out.println("patient_unique_id==" + data.getString("patient_unique_id"));
                             Intent asd = new Intent(getApplicationContext(), PatientDashboard.class);
                             startActivity(asd);
                             finish();
@@ -389,10 +392,12 @@ public class Login extends Activity {
                 headers.put("Content-Type", "application/json");
                 return headers;
             }
+
             @Override
             public String getBodyContentType() {
                 return "application/json; charset=utf-8";
             }
+
             @Override
             public byte[] getBody() throws AuthFailureError {
                 try {
@@ -403,15 +408,13 @@ public class Login extends Activity {
                 }
             }
         };
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                50000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(50000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         RequestQueue requestQueue = Volley.newRequestQueue(Login.this);//Creating a Request Queue
         requestQueue.add(stringRequest); //Adding request to the queue
     }
+
     public void setLocale(String localeName) {
-        if(localeName.isEmpty() || localeName.equals("null")) {
+        if (localeName.isEmpty() || localeName.equals("null")) {
             localeName = "en";
             Log.e("localName status", "empty");
         }
