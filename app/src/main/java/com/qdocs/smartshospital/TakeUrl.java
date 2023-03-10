@@ -1,5 +1,7 @@
 package com.qdocs.smartshospital;
 
+import static android.widget.Toast.makeText;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -42,15 +44,25 @@ public class TakeUrl extends Activity {
 
         urlET = findViewById(R.id.et_domain_takeUrl);
         submitBtn = findViewById(R.id.btn_submit_takeUrl);
-        submitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String appDomain = urlET.getText().toString();
-                getDataFromApi(appDomain);
-                Utility.setSharedPreference(getApplicationContext(), Constants.appDomain, appDomain);
+//        submitBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String appDomain = urlET.getText().toString();
+//                getDataFromApi(appDomain);
+//                Utility.setSharedPreference(getApplicationContext(), Constants.appDomain, appDomain);
+//
+//            }
+//        });
 
-            }
-        });
+        String appDomain = getString(R.string.domainHead);
+//                String appDomain = urlET.getText().toString();
+        if (Utility.isConnectingToInternet(TakeUrl.this)) {
+            getDataFromApi(appDomain);
+        } else {
+            makeText(getApplicationContext(), R.string.noInternetMsg, Toast.LENGTH_SHORT).show();
+        }
+
+        Utility.setSharedPreference(getApplicationContext(), Constants.appDomain, appDomain);
     }
     public void setLocale(String localeName) {
         if(localeName.isEmpty() || localeName.equals("null")) {

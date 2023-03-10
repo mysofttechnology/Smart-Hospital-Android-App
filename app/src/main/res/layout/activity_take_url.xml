@@ -26,6 +26,12 @@
         android:paddingEnd="30dp"
         android:layout_centerInParent="true">
 
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true" />
+
         <LinearLayout
             android:id="@+id/layout_urlET_takeUrl"
             android:layout_width="fill_parent"
@@ -33,6 +39,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
+            android:visibility="gone"
             android:background="@color/white"
             android:gravity="center">
 
@@ -53,7 +60,7 @@
                 android:hint="@string/domainHead"
                 android:textColorHint="@color/hintDark"
                 android:textSize="@dimen/primaryText"
-                android:text="http://hospital.mysofttechnology.com/"
+                android:text="@string/domainHead"
                 android:textColor="@color/textHeading"
                 android:background="@color/transparent"
                 android:singleLine="true"
@@ -69,6 +76,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
+            android:visibility="gone"
             android:text="@string/submit"
             android:textSize="@dimen/primaryText"
             android:background="#3399FF"

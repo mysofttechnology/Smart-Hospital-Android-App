@@ -3,7 +3,7 @@
     <string name="empty"></string>
 
     <!--TAKE URL PAGE-->
-    <string name="domainHead">Enter your hospital url</string>
+    <string name="domainHead">http://hospital.mysofttechnology.com/</string>
     <string name="submit">Submit</string>
     <!--TAKE URL PAGE-->
 
