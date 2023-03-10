@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "675304371806",
+    "firebase_url": "https://smart-hospital-510ee.firebaseio.com",
+    "project_id": "smart-hospital-510ee",
+    "storage_bucket": "smart-hospital-510ee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:675304371806:android:767933f785875b3c9ea6cf",
+        "android_client_info": {
+          "package_name": "com.qdocs.smartshospital"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "675304371806-ho8mno06tmpgmlfs0bmcg5anc6dgqso4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnyCUW1Jh7IiKKlkFTnbIAm55L2iwgK6Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "675304371806-ho8mno06tmpgmlfs0bmcg5anc6dgqso4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
