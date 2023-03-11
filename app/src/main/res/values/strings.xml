@@ -298,6 +298,7 @@
     <!--ABOUT-->
     <string name="hospitalCode">Hospital Code</string>
     <string name="version">Version 2.0</string>
+    <string name="mysoft_tech">MySoft Technology</string>
     <string name="username_error">Please enter Username</string>
     <string name="password_error">Please enter Password</string>
 
