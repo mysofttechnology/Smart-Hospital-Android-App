@@ -1,64 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.qdocs.smartshospital">
+    package="com.mysofttechnology.smartshospital">
 
     <application
-        android:name=".utils.MyApp"
+        android:name="com.mysofttechnology.smartshospital.utils.MyApp"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:requestLegacyExternalStorage="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".patient.PatientOpdLiveConsult"></activity>
-        <activity android:name=".patient.PatientOpdDetailsList"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
-        <activity android:name=".patient.PatientIpdDetailsList"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
-        <activity android:name=".patient.PatientIpdDischargeDetailsList"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
-        <activity android:name=".patient.PatientOpdVisitDetailsList"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
-        <activity android:name=".PatientFrontAddAppoinment" />
-        <activity android:name=".PatientAddAppoinment" />
-        <activity android:name=".Login" />
-        <activity android:name=".ForgotPassword" />
-        <activity android:name=".AboutHospital" />
-        <activity android:name=".TakeUrl" />
-        <activity android:name=".OpenPdf" />
+        <activity android:name="com.mysofttechnology.smartshospital.patient.PatientOpdLiveConsult"></activity>
         <activity
-            android:name=".patient.PatientDashboard"
+            android:name="com.mysofttechnology.smartshospital.patient.PatientOpdDetailsList"
             android:configChanges="orientation|keyboardHidden|screenSize" />
-        <activity android:name=".patient.PatientAppoinmentList" />
-        <activity android:name=".patient.PatientBloodBank" />
-        <activity android:name=".patient.PatientComponentIssue" />
-        <activity android:name=".patient.PatientAmbulanceLists" />
-        <activity android:name=".patient.PatientNotification" />
-        <activity android:name=".patient.PatientIpdPatientLists" />
-        <activity android:name=".patient.PatientRadiology" />
-        <activity android:name=".patient.PatientPathology" />
-        <activity android:name=".patient.NotificationList" />
-        <activity android:name=".patient.PatientTasks" />
-        <activity android:name=".patient.IPDPayment" />
-        <activity android:name=".patient.OPDPayment" />
-        <activity android:name=".patient.PathologyPayment" />
-        <activity android:name=".patient.PharmacyPayment" />
-        <activity android:name=".patient.BloodBankPayment" />
-        <activity android:name=".patient.RadiologyPayment" />
-        <activity android:name=".patient.AppointmentPayment" />
-        <activity android:name=".patient.AmbulancePayment" />
-        <activity android:name=".patient.LiveClasses" />
-        <activity android:name=".patient.PatientLiveConsulation" />
-        <activity android:name=".patient.PatientPharmacyReport" />
-        <activity android:name=".patient.PatientProfile" />
-        <activity android:name=".SplashActivity">
+        <activity
+            android:name="com.mysofttechnology.smartshospital.patient.PatientIpdDetailsList"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity
+            android:name="com.mysofttechnology.smartshospital.patient.PatientIpdDischargeDetailsList"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity
+            android:name="com.mysofttechnology.smartshospital.patient.PatientOpdVisitDetailsList"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity android:name="com.mysofttechnology.smartshospital.PatientFrontAddAppoinment" />
+        <activity android:name="com.mysofttechnology.smartshospital.PatientAddAppoinment" />
+        <activity android:name="com.mysofttechnology.smartshospital.Login" />
+        <activity android:name="com.mysofttechnology.smartshospital.ForgotPassword" />
+        <activity android:name="com.mysofttechnology.smartshospital.AboutHospital" />
+        <activity android:name="com.mysofttechnology.smartshospital.TakeUrl" />
+        <activity android:name="com.mysofttechnology.smartshospital.OpenPdf" />
+        <activity
+            android:name="com.mysofttechnology.smartshospital.patient.PatientDashboard"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity android:name="com.mysofttechnology.smartshospital.patient.PatientAppoinmentList" />
+        <activity android:name="com.mysofttechnology.smartshospital.patient.PatientBloodBank" />
+        <activity android:name="com.mysofttechnology.smartshospital.patient.PatientComponentIssue" />
+        <activity android:name="com.mysofttechnology.smartshospital.patient.PatientAmbulanceLists" />
+        <activity android:name="com.mysofttechnology.smartshospital.patient.PatientNotification" />
+        <activity android:name="com.mysofttechnology.smartshospital.patient.PatientIpdPatientLists" />
+        <activity android:name="com.mysofttechnology.smartshospital.patient.PatientRadiology" />
+        <activity android:name="com.mysofttechnology.smartshospital.patient.PatientPathology" />
+        <activity android:name="com.mysofttechnology.smartshospital.patient.NotificationList" />
+        <activity android:name="com.mysofttechnology.smartshospital.patient.PatientTasks" />
+        <activity android:name="com.mysofttechnology.smartshospital.patient.IPDPayment" />
+        <activity android:name="com.mysofttechnology.smartshospital.patient.OPDPayment" />
+        <activity android:name="com.mysofttechnology.smartshospital.patient.PathologyPayment" />
+        <activity android:name="com.mysofttechnology.smartshospital.patient.PharmacyPayment" />
+        <activity android:name="com.mysofttechnology.smartshospital.patient.BloodBankPayment" />
+        <activity android:name="com.mysofttechnology.smartshospital.patient.RadiologyPayment" />
+        <activity android:name="com.mysofttechnology.smartshospital.patient.AppointmentPayment" />
+        <activity android:name="com.mysofttechnology.smartshospital.patient.AmbulancePayment" />
+        <activity android:name="com.mysofttechnology.smartshospital.patient.LiveClasses" />
+        <activity android:name="com.mysofttechnology.smartshospital.patient.PatientLiveConsulation" />
+        <activity android:name="com.mysofttechnology.smartshospital.patient.PatientPharmacyReport" />
+        <activity android:name="com.mysofttechnology.smartshospital.patient.PatientProfile" />
+        <activity android:name="com.mysofttechnology.smartshospital.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".utils.MyFirebaseMessagingService">
+
+        <service android:name="com.mysofttechnology.smartshospital.utils.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -69,18 +74,27 @@
             </intent-filter>
         </service>
     </application>
+
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CALL_PHONE" android:required="false" />
+    <uses-permission
+        android:name="android.permission.CALL_PHONE"
+        android:required="false" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
-    <uses-permission android:name="android.permission.CAMERA" android:required="false"/>
+    <uses-permission
+        android:name="android.permission.CAMERA"
+        android:required="false" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
-    <uses-feature android:name="android.hardware.telephony" android:required="false" />
-    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
 
 </manifest>

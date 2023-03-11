@@ -106,6 +106,12 @@
 
     </androidx.drawerlayout.widget.DrawerLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_margin="0dp"
+        android:background="@drawable/bottom_nav_shadow" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="match_parent"
@@ -113,6 +119,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
+        android:background="@color/white"
         app:itemIconTint="@drawable/bottom_navigation_background"
         app:itemTextAppearanceActive="@style/BottomNavigationActive"
         app:itemTextAppearanceInactive="@style/BottomNavigationInactive"
