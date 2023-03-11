@@ -4,7 +4,7 @@
     <string name="empty"></string>
 
     <!--TAKE URL PAGE-->
-    <string name="domainHead">अपने अस्पताल का युआरएल दर्ज करें</string>
+    <string name="domainHead">http://hospital.mysofttechnology.com/</string>
     <string name="submit">जमा करें</string>
     <!--TAKE URL PAGE-->
 
@@ -300,6 +300,7 @@
     <!--ABOUT-->
     <string name="hospitalCode">अस्पताल कोड</string>
     <string name="version">Version 2.0</string>
+    <string name="mysoft_tech">MySoft Technology</string>
     <string name="username_error">कृपया उपयोगकर्ता नाम दर्ज करें</string>
     <string name="password_error">कृपया पासवर्ड दर्ज करें</string>
 

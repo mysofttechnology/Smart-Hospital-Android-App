@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:id="@+id/MainRootLayout"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
+    android:orientation="vertical"
     tools:context=".SplashActivity">
 
     <LinearLayout
@@ -47,26 +47,27 @@
                 android:layout_marginBottom="200dp"
                 android:background="@drawable/splash_loader" />
         </LinearLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_alignParentBottom="true"
-            android:layout_margin="20dp">
+            android:layout_margin="20dp"
+            android:gravity="center">
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/version"
-                android:textColor="#000000"
                 android:layout_centerHorizontal="true"
-                android:textSize="@dimen/secondaryText"
                 android:background="@drawable/round_grey"
                 android:paddingStart="10dp"
-                android:paddingEnd="10dp"
                 android:paddingTop="5dp"
-                android:paddingBottom="5dp"/>
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:text="@string/mysoft_tech"
+                android:textColor="#000000"
+                android:textSize="@dimen/secondaryText" />
 
         </RelativeLayout>
 

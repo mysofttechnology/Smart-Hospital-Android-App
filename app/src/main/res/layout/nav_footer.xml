@@ -12,7 +12,7 @@
         android:gravity="center"
         android:textSize="@dimen/secondaryText"
         android:textColor="@color/seperator"
-        android:text="@string/version" />
+        android:text="@string/mysoft_tech" />
 
 </RelativeLayout>
 

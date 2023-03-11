@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,9 +57,11 @@ import com.qdocs.smartshospital.utils.DatabaseHelper;
 import com.qdocs.smartshospital.utils.DrawerArrowDrawable;
 import com.qdocs.smartshospital.utils.Utility;
 import com.squareup.picasso.Picasso;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -70,20 +73,20 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Random;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
+
 import static android.widget.Toast.makeText;
 
-public class PatientDashboard extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class PatientDashboard extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     //RUNTIME PERMISSIONS
     private static final int PERMISSION_CALLBACK_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
-    String[] permissionsRequired = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.CALL_PHONE,Manifest.permission.CAMERA};
+    String[] permissionsRequired = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CALL_PHONE, Manifest.permission.CAMERA};
     private boolean sentToSettings = false;
     TextView unread_count;
     //RUNTIME PERMISSIONS
@@ -128,9 +131,9 @@ public class PatientDashboard extends AppCompatActivity implements SwipeRefreshL
         DatabaseHelper db = new DatabaseHelper(PatientDashboard.this);
         int profile_counts = db.getProfilesCount();
         db.close();
-        if(String.valueOf(profile_counts).equals("0")){
+        if (String.valueOf(profile_counts).equals("0")) {
             unread_count.setVisibility(View.GONE);
-        }else{
+        } else {
             unread_count.setText(String.valueOf(profile_counts));
         }
 
@@ -138,13 +141,13 @@ public class PatientDashboard extends AppCompatActivity implements SwipeRefreshL
             @Override
             public void onClick(View view) {
                 DatabaseHelper db = new DatabaseHelper(PatientDashboard.this);
-                db.updatestatus("0","1");
-                Intent intent=new Intent(PatientDashboard.this,NotificationList.class);
+                db.updatestatus("0", "1");
+                Intent intent = new Intent(PatientDashboard.this, NotificationList.class);
                 startActivity(intent);
             }
         });
         params.put("site_url", Utility.getSharedPreferences(getApplicationContext(), Constants.imagesUrl));
-        JSONObject obj=new JSONObject(params);
+        JSONObject obj = new JSONObject(params);
         Log.e("params", obj.toString());
         getDataFromApi(obj.toString());
 
@@ -189,32 +192,31 @@ public class PatientDashboard extends AppCompatActivity implements SwipeRefreshL
                 return false;
             }
         });
-         loadFragment(new PatientDashboardFragment());
+        loadFragment(new PatientDashboardFragment());
     }
 
 
     @Override
-    public void onRestart()
-    {
+    public void onRestart() {
         super.onRestart();
         DatabaseHelper db = new DatabaseHelper(PatientDashboard.this);
         int profile_counts = db.getProfilesCount();
         db.close();
-        if(String.valueOf(profile_counts).equals("0")){
+        if (String.valueOf(profile_counts).equals("0")) {
             unread_count.setVisibility(View.GONE);
-        }else{
+        } else {
             unread_count.setText(String.valueOf(profile_counts));
         }
     }
 
-    private void getModulesFromApi () {
+    private void getModulesFromApi() {
 
         final ProgressDialog pd = new ProgressDialog(this);
         pd.setMessage("Loading");
         pd.setCancelable(false);
         pd.show();
 
-        String url = Utility.getSharedPreferences(getApplicationContext(), "apiUrl")+Constants.getModuleUrl;
+        String url = Utility.getSharedPreferences(getApplicationContext(), "apiUrl") + Constants.getModuleUrl;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String result) {
@@ -227,7 +229,7 @@ public class PatientDashboard extends AppCompatActivity implements SwipeRefreshL
                         modulesJson = object.getJSONArray("module_list");
                         Utility.setSharedPreference(getApplicationContext(), Constants.modulesArray, modulesJson.toString());
                         if (modulesJson.length() != 0) {
-                            for(int i = 0; i < modulesJson.length(); i++) {
+                            for (int i = 0; i < modulesJson.length(); i++) {
                                 moduleCodeList.add(modulesJson.getJSONObject(i).getString("short_code"));
                                 moduleStatusList.add(modulesJson.getJSONObject(i).getString("is_active"));
                             }
@@ -261,6 +263,7 @@ public class PatientDashboard extends AppCompatActivity implements SwipeRefreshL
                 Log.e("Headers", headers.toString());
                 return headers;
             }
+
             @Override
             public String getBodyContentType() {
                 return "application/json; charset=utf-8";
@@ -269,21 +272,16 @@ public class PatientDashboard extends AppCompatActivity implements SwipeRefreshL
         RequestQueue requestQueue = Volley.newRequestQueue(PatientDashboard.this);//Creating a Request Queue
         requestQueue.add(stringRequest);  //Adding request to the queue
     }
+
     private void setUpPermission() {
 
-        if(ActivityCompat.checkSelfPermission(PatientDashboard.this, permissionsRequired[0]) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(PatientDashboard.this, permissionsRequired[1]) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(PatientDashboard.this, permissionsRequired[2]) != PackageManager.PERMISSION_GRANTED  || ActivityCompat.checkSelfPermission(PatientDashboard.this, permissionsRequired[3]) != PackageManager.PERMISSION_GRANTED){
+        if (ActivityCompat.checkSelfPermission(PatientDashboard.this, permissionsRequired[0]) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(PatientDashboard.this, permissionsRequired[1]) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(PatientDashboard.this, permissionsRequired[2]) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(PatientDashboard.this, permissionsRequired[3]) != PackageManager.PERMISSION_GRANTED) {
 
-            if(ActivityCompat.shouldShowRequestPermissionRationale(PatientDashboard.this,permissionsRequired[0])
-                    || ActivityCompat.shouldShowRequestPermissionRationale(PatientDashboard.this,permissionsRequired[1])
-                    || ActivityCompat.shouldShowRequestPermissionRationale(PatientDashboard.this,permissionsRequired[2])
-                    || ActivityCompat.shouldShowRequestPermissionRationale(PatientDashboard.this,permissionsRequired[3]
-            )){
+            if (ActivityCompat.shouldShowRequestPermissionRationale(PatientDashboard.this, permissionsRequired[0]) || ActivityCompat.shouldShowRequestPermissionRationale(PatientDashboard.this, permissionsRequired[1]) || ActivityCompat.shouldShowRequestPermissionRationale(PatientDashboard.this, permissionsRequired[2]) || ActivityCompat.shouldShowRequestPermissionRationale(PatientDashboard.this, permissionsRequired[3])) {
 
-                ActivityCompat.requestPermissions(PatientDashboard.this,permissionsRequired,PERMISSION_CALLBACK_CONSTANT);
+                ActivityCompat.requestPermissions(PatientDashboard.this, permissionsRequired, PERMISSION_CALLBACK_CONSTANT);
             } else {
-                ActivityCompat.requestPermissions(PatientDashboard.this,permissionsRequired,PERMISSION_CALLBACK_CONSTANT);
+                ActivityCompat.requestPermissions(PatientDashboard.this, permissionsRequired, PERMISSION_CALLBACK_CONSTANT);
             }
             Utility.setSharedPreferenceBoolean(getApplicationContext(), Constants.permissionStatus, true);
         }
@@ -328,18 +326,19 @@ public class PatientDashboard extends AppCompatActivity implements SwipeRefreshL
             }
         });
     }
-     private void decorate() {
+
+    private void decorate() {
 
         Utility.setLocale(getApplicationContext(), Utility.getSharedPreferences(getApplicationContext(), Constants.langCode));
-        String appLogo = Utility.getSharedPreferences(this, Constants.appLogo)+"?"+new Random().nextInt(11);
+        String appLogo = Utility.getSharedPreferences(this, Constants.appLogo) + "?" + new Random().nextInt(11);
 
         Picasso.with(getApplicationContext()).load(Utility.getSharedPreferences(this, "userImage")).placeholder(R.drawable.placeholder_user).into(profileImageIV);
         Picasso.with(getApplicationContext()).load(appLogo).fit().centerInside().placeholder(null).into(actionBarLogo);
 
-         nameTV.setText(Utility.getSharedPreferences(this, Constants.userName));
-         PatientId.setText(Utility.getSharedPreferences(this, Constants.patient_unique_id));
+        nameTV.setText(Utility.getSharedPreferences(this, Constants.userName));
+        PatientId.setText(Utility.getSharedPreferences(this, Constants.patient_unique_id));
 
-        System.out.println("PRIMARY COLOUR="+Utility.getSharedPreferences(getApplicationContext(), Constants.primaryColour));
+        System.out.println("PRIMARY COLOUR=" + Utility.getSharedPreferences(getApplicationContext(), Constants.primaryColour));
 
         actionBar.setBackgroundColor(Color.parseColor(Utility.getSharedPreferences(getApplicationContext(), Constants.primaryColour)));
         drawerHead.setBackgroundColor(Color.parseColor(Utility.getSharedPreferences(getApplicationContext(), Constants.secondaryColour)));
@@ -349,14 +348,15 @@ public class PatientDashboard extends AppCompatActivity implements SwipeRefreshL
             window.setStatusBarColor(Color.parseColor(Utility.getSharedPreferences(getApplicationContext(), Constants.primaryColour)));
         }
     }
+
     private void prepareNavList() {
         /*params.put("patient_id", Utility.getSharedPreferences(getApplicationContext(), Constants.patient_id));
         JSONObject obj=new JSONObject(params);
         Log.e("params ", obj.toString());*/
 
-        if(Utility.isConnectingToInternet(getApplicationContext())){
+        if (Utility.isConnectingToInternet(getApplicationContext())) {
             getModulesFromApi();
-        }else{
+        } else {
             makeText(getApplicationContext(), R.string.noInternetMsg, Toast.LENGTH_SHORT).show();
         }
 
@@ -368,84 +368,84 @@ public class PatientDashboard extends AppCompatActivity implements SwipeRefreshL
                     case R.id.nav_home:
                         Intent dashboard = new Intent(PatientDashboard.this, PatientDashboard.class);
                         startActivity(dashboard);
-                        overridePendingTransition(R.anim.slide_leftright,  R.anim.no_animation);
+                        overridePendingTransition(R.anim.slide_leftright, R.anim.no_animation);
                         drawer.closeDrawer(GravityCompat.START);
                         break;
 
                     case R.id.nav_profile:
                         Intent profile = new Intent(PatientDashboard.this, PatientProfile.class);
                         startActivity(profile);
-                        overridePendingTransition(R.anim.slide_leftright,  R.anim.no_animation);
+                        overridePendingTransition(R.anim.slide_leftright, R.anim.no_animation);
                         drawer.closeDrawer(GravityCompat.START);
                         break;
 
                     case R.id.nav_appoinments:
                         Intent appoinment = new Intent(PatientDashboard.this, PatientAppoinmentList.class);
                         startActivity(appoinment);
-                        overridePendingTransition(R.anim.slide_leftright,  R.anim.no_animation);
+                        overridePendingTransition(R.anim.slide_leftright, R.anim.no_animation);
                         drawer.closeDrawer(GravityCompat.START);
                         break;
 
                     case R.id.nav_opd:
                         Intent fees = new Intent(PatientDashboard.this, PatientOpdDetailsList.class);
                         startActivity(fees);
-                        overridePendingTransition(R.anim.slide_leftright,  R.anim.no_animation);
+                        overridePendingTransition(R.anim.slide_leftright, R.anim.no_animation);
                         drawer.closeDrawer(GravityCompat.START);
                         break;
 
                     case R.id.nav_ipd:
                         Intent classTimeTable = new Intent(PatientDashboard.this, PatientIpdDetailsList.class);
                         startActivity(classTimeTable);
-                        overridePendingTransition(R.anim.slide_leftright,  R.anim.no_animation);
+                        overridePendingTransition(R.anim.slide_leftright, R.anim.no_animation);
                         drawer.closeDrawer(GravityCompat.START);
                         break;
 
                     case R.id.nav_pharmacy:
                         Intent homework = new Intent(PatientDashboard.this, PatientPharmacyReport.class);
                         startActivity(homework);
-                        overridePendingTransition(R.anim.slide_leftright,  R.anim.no_animation);
+                        overridePendingTransition(R.anim.slide_leftright, R.anim.no_animation);
                         drawer.closeDrawer(GravityCompat.START);
                         break;
 
                     case R.id.nav_pathology:
                         Intent download = new Intent(PatientDashboard.this, PatientPathology.class);
                         startActivity(download);
-                        overridePendingTransition(R.anim.slide_leftright,  R.anim.no_animation);
+                        overridePendingTransition(R.anim.slide_leftright, R.anim.no_animation);
                         drawer.closeDrawer(GravityCompat.START);
                         break;
 
                     case R.id.nav_radiology:
                         Intent examSchedule = new Intent(PatientDashboard.this, PatientRadiology.class);
                         startActivity(examSchedule);
-                        overridePendingTransition(R.anim.slide_leftright,  R.anim.no_animation);
+                        overridePendingTransition(R.anim.slide_leftright, R.anim.no_animation);
                         drawer.closeDrawer(GravityCompat.START);
                         break;
 
                     case R.id.nav_ambulance:
                         Intent timeline = new Intent(PatientDashboard.this, PatientAmbulanceLists.class);
                         startActivity(timeline);
-                        overridePendingTransition(R.anim.slide_leftright,  R.anim.no_animation);
+                        overridePendingTransition(R.anim.slide_leftright, R.anim.no_animation);
                         drawer.closeDrawer(GravityCompat.START);
                         break;
 
                     case R.id.nav_bloodbank:
                         Intent doc = new Intent(PatientDashboard.this, PatientBloodBank.class);
                         startActivity(doc);
-                        overridePendingTransition(R.anim.slide_leftright,  R.anim.no_animation);
+                        overridePendingTransition(R.anim.slide_leftright, R.anim.no_animation);
                         drawer.closeDrawer(GravityCompat.START);
                         break;
 
                     case R.id.nav_liveconsult:
                         Intent liveconsult = new Intent(PatientDashboard.this, PatientLiveConsulation.class);
                         startActivity(liveconsult);
-                        overridePendingTransition(R.anim.slide_leftright,  R.anim.no_animation);
+                        overridePendingTransition(R.anim.slide_leftright, R.anim.no_animation);
                         drawer.closeDrawer(GravityCompat.START);
                         break;
 
                     case R.id.nav_about:
                         Intent about = new Intent(PatientDashboard.this, AboutHospital.class);
                         startActivity(about);
-                        overridePendingTransition(R.anim.slide_leftright,  R.anim.no_animation);
+                        overridePendingTransition(R.anim.slide_leftright, R.anim.no_animation);
                         drawer.closeDrawer(GravityCompat.START);
                         break;
 
@@ -457,9 +457,9 @@ public class PatientDashboard extends AppCompatActivity implements SwipeRefreshL
                         builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface dialog, int which) {
-                                if(Utility.isConnectingToInternet(getApplicationContext())){
+                                if (Utility.isConnectingToInternet(getApplicationContext())) {
                                     loginOutApi();
-                                }else{
+                                } else {
                                     makeText(getApplicationContext(), R.string.noInternetMsg, Toast.LENGTH_SHORT).show();
                                 }
 
@@ -479,49 +479,57 @@ public class PatientDashboard extends AppCompatActivity implements SwipeRefreshL
             }
         });
     }
+
     private void setMenu(Menu navMenu, Menu bottomNavMenu) {
-        for (int i = 0; i<moduleCodeList.size(); i++) {
-            if (moduleCodeList.get(i).equals("OPD")&& moduleStatusList.get(i).equals("0")) {
+        for (int i = 0; i < moduleCodeList.size(); i++) {
+            if (moduleCodeList.get(i).equals("OPD") && moduleStatusList.get(i).equals("0")) {
                 navMenu.findItem(R.id.nav_opd).setVisible(false);
                 bottomNavMenu.findItem(R.id.navigation_opd).setVisible(false);
-            } if (moduleCodeList.get(i).equals("IPD")&& moduleStatusList.get(i).equals("0")) {
+            }
+            if (moduleCodeList.get(i).equals("IPD") && moduleStatusList.get(i).equals("0")) {
                 navMenu.findItem(R.id.nav_ipd).setVisible(false);
-            } if (moduleCodeList.get(i).equals("pharmacy")&& moduleStatusList.get(i).equals("0")) {
+            }
+            if (moduleCodeList.get(i).equals("pharmacy") && moduleStatusList.get(i).equals("0")) {
                 navMenu.findItem(R.id.nav_pharmacy).setVisible(false);
-               bottomNavMenu.findItem(R.id.navigation_pharmacy).setVisible(false);
-            } if (moduleCodeList.get(i).equals("pathology")&& moduleStatusList.get(i).equals("0")) {
+                bottomNavMenu.findItem(R.id.navigation_pharmacy).setVisible(false);
+            }
+            if (moduleCodeList.get(i).equals("pathology") && moduleStatusList.get(i).equals("0")) {
                 navMenu.findItem(R.id.nav_pathology).setVisible(false);
                 bottomNavMenu.findItem(R.id.navigation_pathology).setVisible(false);
-            } if (moduleCodeList.get(i).equals("radiology")&& moduleStatusList.get(i).equals("0")) {
+            }
+            if (moduleCodeList.get(i).equals("radiology") && moduleStatusList.get(i).equals("0")) {
                 navMenu.findItem(R.id.nav_radiology).setVisible(false);
                 bottomNavMenu.findItem(R.id.navigation_radiology).setVisible(false);
-            } if (moduleCodeList.get(i).equals("ambulance")&& moduleStatusList.get(i).equals("0")) {
+            }
+            if (moduleCodeList.get(i).equals("ambulance") && moduleStatusList.get(i).equals("0")) {
                 navMenu.findItem(R.id.nav_ambulance).setVisible(false);
-            } if (moduleCodeList.get(i).equals("blood_bank")&& moduleStatusList.get(i).equals("0")) {
+            }
+            if (moduleCodeList.get(i).equals("blood_bank") && moduleStatusList.get(i).equals("0")) {
                 navMenu.findItem(R.id.nav_bloodbank).setVisible(false);
-            } if (moduleCodeList.get(i).equals("front_office")&& moduleStatusList.get(i).equals("0")) {
+            }
+            if (moduleCodeList.get(i).equals("front_office") && moduleStatusList.get(i).equals("0")) {
                 navMenu.findItem(R.id.nav_appoinments).setVisible(false);
-            } if (moduleCodeList.get(i).equals("zoom_live_meeting")&& moduleStatusList.get(i).equals("0")) {
+            }
+            if (moduleCodeList.get(i).equals("zoom_live_meeting") && moduleStatusList.get(i).equals("0")) {
                 navMenu.findItem(R.id.nav_liveconsult).setVisible(false);
             }
         }
         //menu.findItem(R.id.nav_camera).setVisible(false);
     }
+
     private void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.Dashboard_frame, fragment);
         transaction.commit();
     }
+
     //RUNTIME PERMISSIONS
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == PERMISSION_CALLBACK_CONSTANT){
+        if (requestCode == PERMISSION_CALLBACK_CONSTANT) {
 
-            if(ActivityCompat.shouldShowRequestPermissionRationale(PatientDashboard.this,permissionsRequired[0])
-                    || ActivityCompat.shouldShowRequestPermissionRationale(PatientDashboard.this,permissionsRequired[1])
-                    || ActivityCompat.shouldShowRequestPermissionRationale(PatientDashboard.this,permissionsRequired[2])
-                    || ActivityCompat.shouldShowRequestPermissionRationale(PatientDashboard.this,permissionsRequired[3])){
+            if (ActivityCompat.shouldShowRequestPermissionRationale(PatientDashboard.this, permissionsRequired[0]) || ActivityCompat.shouldShowRequestPermissionRationale(PatientDashboard.this, permissionsRequired[1]) || ActivityCompat.shouldShowRequestPermissionRationale(PatientDashboard.this, permissionsRequired[2]) || ActivityCompat.shouldShowRequestPermissionRationale(PatientDashboard.this, permissionsRequired[3])) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(PatientDashboard.this);
                 builder.setTitle("Need Multiple Permissions");
@@ -530,7 +538,7 @@ public class PatientDashboard extends AppCompatActivity implements SwipeRefreshL
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
-                        ActivityCompat.requestPermissions(PatientDashboard.this,permissionsRequired,PERMISSION_CALLBACK_CONSTANT);
+                        ActivityCompat.requestPermissions(PatientDashboard.this, permissionsRequired, PERMISSION_CALLBACK_CONSTANT);
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -566,6 +574,7 @@ public class PatientDashboard extends AppCompatActivity implements SwipeRefreshL
             }*/
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -578,6 +587,7 @@ public class PatientDashboard extends AppCompatActivity implements SwipeRefreshL
             }
         }
     }
+
     @Override
     protected void onPostResume() {
         super.onPostResume();
@@ -587,6 +597,7 @@ public class PatientDashboard extends AppCompatActivity implements SwipeRefreshL
             }
         }
     }
+
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
@@ -599,10 +610,11 @@ public class PatientDashboard extends AppCompatActivity implements SwipeRefreshL
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                doubleBackToExitPressedOnce=false;
+                doubleBackToExitPressedOnce = false;
             }
         }, 2000);
     }
+
     private void goToSettings() {
         sentToSettings = true;
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
@@ -610,17 +622,18 @@ public class PatientDashboard extends AppCompatActivity implements SwipeRefreshL
         intent.setData(uri);
         startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
     }
-    private void loginOutApi () {
+
+    private void loginOutApi() {
 
         DatabaseHelper dataBaseHelpers = new DatabaseHelper(PatientDashboard.this);
-        dataBaseHelpers.deleteAll() ;
+        dataBaseHelpers.deleteAll();
 
         final ProgressDialog pd = new ProgressDialog(PatientDashboard.this);
         pd.setMessage("Loading");
         pd.setCancelable(false);
         pd.show();
 
-        String url = Utility.getSharedPreferences(PatientDashboard.this, "apiUrl")+ Constants.logoutUrl;
+        String url = Utility.getSharedPreferences(PatientDashboard.this, "apiUrl") + Constants.logoutUrl;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String result) {
@@ -667,6 +680,7 @@ public class PatientDashboard extends AppCompatActivity implements SwipeRefreshL
                 Log.e("Headers", headers.toString());
                 return headers;
             }
+
             @Override
             public String getBodyContentType() {
                 return "application/json; charset=utf-8";
@@ -677,6 +691,7 @@ public class PatientDashboard extends AppCompatActivity implements SwipeRefreshL
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
+
     private void getDataFromApi(String bodyParams) {
 
         final ProgressDialog pd = new ProgressDialog(this);
@@ -690,7 +705,7 @@ public class PatientDashboard extends AppCompatActivity implements SwipeRefreshL
 
             SecretKey key = Utility.generateKey();
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, Utility.decryptMsg(Utility.encryptMsg(key), key ), new Response.Listener<String>() {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, Utility.decryptMsg(Utility.encryptMsg(key), key), new Response.Listener<String>() {
                 @Override
                 public void onResponse(String result) {
                     if (result != null) {
@@ -699,19 +714,19 @@ public class PatientDashboard extends AppCompatActivity implements SwipeRefreshL
 
                             JSONObject object = new JSONObject(result);
 
-                            if(object.getString("status").equals("0")) {
+                            /*if (object.getString("status").equals("0")) {
                                 Utility.setSharedPreferenceBoolean(getApplicationContext(), Constants.isLoggegIn, false);
 
                                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(PatientDashboard.this);
                                 builder.setCancelable(false);
                                 builder.setMessage(object.getString("msg"));
-                                builder.setTitle("");
+                                builder.setTitle("Is Invalid 4");
                                 builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 
                                     public void onClick(DialogInterface dialog, int which) {
-                                        if(Utility.isConnectingToInternet(getApplicationContext())){
+                                        if (Utility.isConnectingToInternet(getApplicationContext())) {
                                             loginOutApi();
-                                        }else{
+                                        } else {
                                             makeText(getApplicationContext(), R.string.noInternetMsg, Toast.LENGTH_SHORT).show();
                                         }
                                     }
@@ -719,7 +734,7 @@ public class PatientDashboard extends AppCompatActivity implements SwipeRefreshL
 
                                 android.app.AlertDialog alert = builder.create();
                                 alert.show();
-                            }
+                            }*/
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -729,15 +744,14 @@ public class PatientDashboard extends AppCompatActivity implements SwipeRefreshL
                         Toast.makeText(getApplicationContext(), R.string.noInternetMsg, Toast.LENGTH_SHORT).show();
                     }
                 }
-            },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError volleyError) {
-                            pd.dismiss();
-                            Log.e("Volley Error", volleyError.toString());
-                            Toast.makeText(PatientDashboard.this, R.string.apiErrorMsg, Toast.LENGTH_LONG).show();
-                        }
-                    }) {
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    pd.dismiss();
+                    Log.e("Volley Error", volleyError.toString());
+                    Toast.makeText(PatientDashboard.this, R.string.apiErrorMsg, Toast.LENGTH_LONG).show();
+                }
+            }) {
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
 
@@ -771,8 +785,10 @@ public class PatientDashboard extends AppCompatActivity implements SwipeRefreshL
             requestQueue.add(stringRequest);
 
 
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException | InvalidKeyException | InvalidParameterSpecException |
-                IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException | InvalidAlgorithmParameterException  exp) {
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException |
+                 InvalidKeyException | InvalidParameterSpecException | IllegalBlockSizeException |
+                 BadPaddingException | UnsupportedEncodingException |
+                 InvalidAlgorithmParameterException exp) {
             Log.e("ENCRYPTION", exp.toString());
         }
     }

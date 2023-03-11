@@ -15,7 +15,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -26,8 +28,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.qdocs.smartshospital.utils.Constants;
 import com.qdocs.smartshospital.utils.Utility;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -37,6 +41,7 @@ import java.security.spec.InvalidParameterSpecException;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -69,7 +74,7 @@ public class BaseActivity extends AppCompatActivity {
         currency = Utility.getSharedPreferences(getApplicationContext(), Constants.currency);
 
         params.put("site_url", Utility.getSharedPreferences(getApplicationContext(), Constants.imagesUrl));
-        JSONObject obj=new JSONObject(params);
+        JSONObject obj = new JSONObject(params);
         Log.e("params ", obj.toString());
         getDataFromApi(obj.toString());
 
@@ -80,10 +85,11 @@ public class BaseActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
-                overridePendingTransition(R.anim.no_animation,  R.anim.slide_rightleft);
+                overridePendingTransition(R.anim.no_animation, R.anim.slide_rightleft);
             }
         });
     }
+
     private void decorate() {
         actionBar.setBackgroundColor(Color.parseColor(Utility.getSharedPreferences(getApplicationContext(), Constants.primaryColour)));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -92,14 +98,15 @@ public class BaseActivity extends AppCompatActivity {
             window.setStatusBarColor(Color.parseColor(Utility.getSharedPreferences(getApplicationContext(), Constants.primaryColour)));
         }
     }
-    private void logoutApi () {
+
+    private void logoutApi() {
 
         final ProgressDialog pd = new ProgressDialog(BaseActivity.this);
         pd.setMessage("Loading");
         pd.setCancelable(false);
         pd.show();
 
-        String url = Utility.getSharedPreferences(BaseActivity.this, "apiUrl")+ Constants.logoutUrl;
+        String url = Utility.getSharedPreferences(BaseActivity.this, "apiUrl") + Constants.logoutUrl;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String result) {
@@ -146,6 +153,7 @@ public class BaseActivity extends AppCompatActivity {
                 Log.e("Headers", headers.toString());
                 return headers;
             }
+
             @Override
             public String getBodyContentType() {
                 return "application/json; charset=utf-8";
@@ -154,6 +162,7 @@ public class BaseActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(BaseActivity.this);//Creating a Request Queue
         requestQueue.add(stringRequest); //Adding request to the queue
     }
+
     private void getDataFromApi(String bodyParams) {
 
         final ProgressDialog pd = new ProgressDialog(this);
@@ -171,8 +180,8 @@ public class BaseActivity extends AppCompatActivity {
 
             String url = Utility.decryptMsg(Utility.encryptMsg(key), key);
 
-            Log.e("check url", url+"..");
-            System.out.println("check url== "+url);
+            Log.e("check url", url + "..");
+            System.out.println("check url== " + url);
 
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
@@ -183,7 +192,7 @@ public class BaseActivity extends AppCompatActivity {
 
                             JSONObject object = new JSONObject(result);
 
-                            if(object.getString("status").equals("0")) {
+                            /*if (object.getString("status").equals("0")) {
 
                                 Utility.setSharedPreferenceBoolean(getApplicationContext(), Constants.isLoggegIn, false);
 
@@ -191,13 +200,13 @@ public class BaseActivity extends AppCompatActivity {
                                 builder.setCancelable(false);
                                 // builder.setMessage(R.string.verificationMessage);
                                 builder.setMessage(object.getString("msg"));
-                                builder.setTitle("");
+                                builder.setTitle("Is Invalid 1");
                                 builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 
                                     public void onClick(DialogInterface dialog, int which) {
-                                        if(Utility.isConnectingToInternet(getApplicationContext())){
+                                        if (Utility.isConnectingToInternet(getApplicationContext())) {
                                             logoutApi();
-                                        }else{
+                                        } else {
                                             makeText(getApplicationContext(), R.string.noInternetMsg, Toast.LENGTH_SHORT).show();
                                         }
 
@@ -207,7 +216,7 @@ public class BaseActivity extends AppCompatActivity {
                                 android.app.AlertDialog alert = builder.create();
                                 alert.show();
 
-                            }
+                            }*/
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -217,15 +226,14 @@ public class BaseActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), R.string.noInternetMsg, Toast.LENGTH_SHORT).show();
                     }
                 }
-            },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError volleyError) {
-                            pd.dismiss();
-                            Log.e("Volley Error", volleyError.toString());
-                            Toast.makeText(BaseActivity.this, R.string.apiErrorMsg, Toast.LENGTH_LONG).show();
-                        }
-                    }) {
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    pd.dismiss();
+                    Log.e("Volley Error", volleyError.toString());
+                    Toast.makeText(BaseActivity.this, R.string.apiErrorMsg, Toast.LENGTH_LONG).show();
+                }
+            }) {
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
 
@@ -259,8 +267,10 @@ public class BaseActivity extends AppCompatActivity {
             requestQueue.add(stringRequest);
 
 
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException | InvalidKeyException | InvalidParameterSpecException |
-                IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException | InvalidAlgorithmParameterException  exp) {
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException |
+                 InvalidKeyException | InvalidParameterSpecException | IllegalBlockSizeException |
+                 BadPaddingException | UnsupportedEncodingException |
+                 InvalidAlgorithmParameterException exp) {
             Log.e("ENCRYPTION", exp.toString());
         }
 
